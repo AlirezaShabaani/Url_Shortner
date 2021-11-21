@@ -2,9 +2,12 @@ package port
 
 import "url_shortner/internal/core/domain"
 
-type RepositoryServices interface {
-	Save(data domain.Data)error
-	Cache(data domain.Data)error
-	ReadCache(surl string)(string,error)
-	ReadDb(surl string)(domain.Data,error)
+type DBRepository interface {
+	Save(data domain.Data) error
+	ReadDb(surl string) (domain.Data, error)
+}
+
+type CacheRepository interface {
+	ReadCache(surl string) (string, error)
+	Cache(data domain.Data) error
 }

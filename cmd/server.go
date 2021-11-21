@@ -1,7 +1,6 @@
 package cmd
 
 import (
-	"fmt"
 	"github.com/spf13/cobra"
 )
 
@@ -11,7 +10,7 @@ var (
 		Short: "shorting urls",
 		Long:  "shorting long urls",
 		Run: func(cmd *cobra.Command, args []string) {
-			fmt.Print("Helooooooooooooooooo beautiful humans")
+
 		},
 	}
 )

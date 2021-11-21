@@ -8,12 +8,13 @@ import (
 )
 
 type service struct {
-	repositoryServices port.RepositoryServices
+	DBRepository port.DBRepository
+	CacheRepository port.CacheRepository
 	uidgen uidgen.UIDGen
 }
 
-func New(repositoryServices port.RepositoryServices,uidgen uidgen.UIDGen) *service {
-	return &service{repositoryServices: repositoryServices,uidgen: uidgen}
+func New(repositoryServices port.DBRepository,uidgen uidgen.UIDGen,CacheRepository port.CacheRepository) *service {
+	return &service{DBRepository: repositoryServices,uidgen: uidgen,CacheRepository: CacheRepository}
 }
 
 
@@ -21,11 +22,11 @@ func New(repositoryServices port.RepositoryServices,uidgen uidgen.UIDGen) *servi
 
 func (srvs *service) Save(ourl string) (surl string,err error) {
 	surl = srvs.uidgen.New()
-	err = srvs.repositoryServices.Save(domain.Data{Ourl:  ourl, Surl:  surl})
+	err = srvs.DBRepository.Save(domain.Data{Ourl:  ourl, Surl:  surl})
 	if err != nil {
 		return "", errors.New("trouble when saving shortened url in database")
 	}
-	err = srvs.repositoryServices.Cache(domain.Data{Ourl:  ourl, Surl:  surl})
+	err = srvs.CacheRepository.Cache(domain.Data{Ourl:  ourl, Surl:  surl})
 	if err != nil {
 		return "", errors.New("trouble when caching shortened url")
 	}
@@ -36,9 +37,9 @@ func (srvs *service) Save(ourl string) (surl string,err error) {
 
 
 func (srvs *service) Read(surl string) (ourl string,err error) {
-	ourl,err = srvs.repositoryServices.ReadCache(surl)
+	ourl,err = srvs.CacheRepository.ReadCache(surl)
 	if err != nil || ourl == ""{
-		data, err := srvs.repositoryServices.ReadDb(surl)
+		data, err := srvs.DBRepository.ReadDb(surl)
 		if err != nil {
 			return "",errors.New("nothing found")
 		}
