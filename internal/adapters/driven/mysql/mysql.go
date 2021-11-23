@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
+	"log"
 )
 //===========
 //type mysqlutils struct {
@@ -15,11 +16,11 @@ import (
 //}
 //============
 
-func ConnectMysql(host, port, username, password, dbName string) (DB *gorm.DB, err error) {
+func InitMysql(host, port, username, password, dbName string) (DB *gorm.DB) {
 	connection := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?parseTime=true", username, password, host, port, dbName)
-	DB, err = gorm.Open(mysql.Open(connection), &gorm.Config{})
+	DB, err := gorm.Open(mysql.Open(connection), &gorm.Config{})
 	if err != nil {
-		return
+		log.Fatal("can't connect to mysql db ,  err : " + err.Error())
 	}
 	return
 }

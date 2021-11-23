@@ -1,0 +1,16 @@
+#shortner configs
+
+SERVER_PORT: "10000"
+SERVER_HOST: "localhost"
+
+
+MYSQL_HOST: "localhost"
+MYSQL_PORT: "3306"
+MYSQL_USER: "root"
+MYSQL_PASS: "password"
+MYSQL_DbName: "url_shortener"
+
+REDIS_PORT: "6379"
+REDIS_HOST: "0.0.0.0"
+REDIS_USER: ""
+REDIS_PASS: ""

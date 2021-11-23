@@ -3,11 +3,11 @@ package port
 import "url_shortner/internal/core/domain"
 
 type DBRepository interface {
-	Save(data domain.Data) error
-	ReadDb(surl string) (domain.Data, error)
+	Save(data domain.Data) (err error)
+	ReadDb(surl string) (data domain.Data,err error)
 }
 
 type CacheRepository interface {
-	ReadCache(surl string) (string, error)
-	Cache(data domain.Data) error
+	ReadCache(surl string) (ourl string,err error)
+	Cache(data domain.Data) (err error)
 }
