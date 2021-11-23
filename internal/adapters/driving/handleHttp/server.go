@@ -13,6 +13,7 @@ import (
 	"url_shortner/internal/adapters/driven/redis"
 	"url_shortner/internal/core/service"
 	"url_shortner/internal/repositories/urlRepo"
+	"url_shortner/pkg/random"
 	"url_shortner/pkg/uidgen"
 )
 
@@ -25,7 +26,7 @@ func StartServer()  {
 	REDIS := redis.InitRedis(redisConf.Addr, redisConf.UserName, redisConf.Password, redisConf.DbName)
 	dbrepo := urlRepo.NewDb(MYSQL)
 	redrepo := urlRepo.NewCache(REDIS)
-	urlservices := service.New(dbrepo, uidgen.New(), redrepo)
+	urlservices := service.New(dbrepo, uidgen.New(), redrepo,random.New())
 	handler := New(urlservices)
 	RegisterRoutes(handler,e)
 

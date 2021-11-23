@@ -3,7 +3,6 @@ package handleHttp
 import (
 	"github.com/labstack/echo/v4"
 	"net/http"
-	"url_shortner/internal/adapters/driving/handleHttp/model"
 	"url_shortner/internal/core/port"
 )
 
@@ -16,30 +15,26 @@ func New(urlServices port.UrlServices) HttpHandler {
 }
 
 func (h *HttpHandler) Save(ctx echo.Context) error {
-	m := new(model.GenerateUrlReq)
-	if err := ctx.Bind(m); err != nil {
-		return ctx.JSON(http.StatusBadRequest, err.Error())
+	var ourl string
+	if ourl = ctx.QueryParam("ourl"); ourl == "" {
+		return ctx.JSON(http.StatusBadRequest, "url param can't be empty")
 	}
-	surl, err := h.urlServices.Save(m.Ourl)
+	surl, err := h.urlServices.Save(ourl)
 	if err != nil {
 		return ctx.JSON(http.StatusBadRequest, err.Error())
 	}
-	return ctx.JSON(http.StatusOK, "shortened url :"+surl)
+	return ctx.JSON(http.StatusOK, "shortened url : localhost:10000/"+surl)
 }
 
 
 func (h *HttpHandler) Redirect(ctx echo.Context) error {
 	var surl string
-	if surl = ctx.QueryParam("surl"); surl == "" {
+	if surl = ctx.Param("surl");surl == ""{
 		return ctx.JSON(http.StatusBadRequest, "url param can't be empty")
 	}
 	ourl, err := h.urlServices.Read(surl)
 	if err != nil {
 		return ctx.JSON(http.StatusBadRequest, err.Error())
 	}
-	return ctx.Redirect(http.StatusPermanentRedirect,ourl)
-	//if err != nil {
-	//	return ctx.JSON(http.StatusBadRequest, err.Error())
-	//}
-	//return ctx.JSON(http.StatusOK,ourl)
+	return ctx.Redirect(301,ourl)
 }

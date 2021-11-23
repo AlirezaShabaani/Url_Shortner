@@ -6,7 +6,7 @@ require (
 	github.com/go-redis/redis/v8 v8.11.4
 	github.com/google/uuid v1.1.2
 	github.com/jinzhu/now v1.1.3 // indirect
-	github.com/labstack/echo/v4 v4.6.1
+	github.com/labstack/echo/v4 v4.1.17
 	github.com/labstack/gommon v0.3.1 // indirect
 	github.com/spf13/cobra v1.2.1
 	github.com/spf13/viper v1.9.0
