@@ -1,9 +1,9 @@
-package httphdl
+package handleHttp
 
 import (
 	"github.com/labstack/echo/v4"
 	"net/http"
-	"url_shortner/internal/adapters/driving/httphdl/model"
+	"url_shortner/internal/adapters/driving/handleHttp/model"
 	"url_shortner/internal/core/port"
 )
 
@@ -36,7 +36,7 @@ func (h *HttpHandler) Read(ctx echo.Context) error {
 	if err != nil {
 		return ctx.JSON(http.StatusBadRequest, err.Error())
 	}
-	err = ctx.Redirect(http.StatusOK,ourl)
+	err = ctx.Redirect(http.StatusPermanentRedirect,ourl)
 	if err != nil {
 		return ctx.JSON(http.StatusBadRequest, err.Error())
 	}
