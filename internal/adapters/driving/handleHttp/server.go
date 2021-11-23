@@ -26,9 +26,9 @@ func StartServer()  {
 	dbrepo := urlRepo.NewDb(MYSQL)
 	redrepo := urlRepo.NewCache(REDIS)
 	urlservices := service.New(dbrepo, uidgen.New(), redrepo)
-	hdl := New(urlservices) //hdl = handler
-	e.POST("/new", hdl.Save)
-	e.POST("/redirect", hdl.Read)
+	handler := New(urlservices)
+	RegisterRoutes(handler,e)
+
 
 
 	// Graceful shutdown

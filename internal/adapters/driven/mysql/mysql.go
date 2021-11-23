@@ -5,6 +5,7 @@ import (
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"log"
+	"url_shortner/internal/adapters/driven/mysql/model"
 )
 //===========
 //type mysqlutils struct {
@@ -21,6 +22,10 @@ func InitMysql(host, port, username, password, dbName string) (DB *gorm.DB) {
 	DB, err := gorm.Open(mysql.Open(connection), &gorm.Config{})
 	if err != nil {
 		log.Fatal("can't connect to mysql db ,  err : " + err.Error())
+	}
+	err = DB.AutoMigrate(model.Data{})
+	if err != nil {
+		log.Fatal("can't migrate ")
 	}
 	return
 }

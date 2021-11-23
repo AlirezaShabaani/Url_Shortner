@@ -7,7 +7,7 @@ import (
 
 var (
 	rootCmd = &cobra.Command{
-		Use:   "Shortner",
+		Use:   "Shortener",
 		Short: "shorting urls",
 		Long:  "shorting long urls",
 		Run: func(cmd *cobra.Command, args []string) {

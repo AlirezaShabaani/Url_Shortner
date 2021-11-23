@@ -45,7 +45,7 @@ func (srvs *service) Read(surl string) (ourl string,err error) {
 		}
 		return data.Ourl,nil
 	}
-	return "", nil
+	return ourl, nil
 }
 
 

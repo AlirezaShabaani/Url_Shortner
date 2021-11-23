@@ -27,7 +27,8 @@ func (h *HttpHandler) Save(ctx echo.Context) error {
 	return ctx.JSON(http.StatusOK, "shortened url :"+surl)
 }
 
-func (h *HttpHandler) Read(ctx echo.Context) error {
+
+func (h *HttpHandler) Redirect(ctx echo.Context) error {
 	var surl string
 	if surl = ctx.QueryParam("surl"); surl == "" {
 		return ctx.JSON(http.StatusBadRequest, "url param can't be empty")
@@ -36,9 +37,9 @@ func (h *HttpHandler) Read(ctx echo.Context) error {
 	if err != nil {
 		return ctx.JSON(http.StatusBadRequest, err.Error())
 	}
-	err = ctx.Redirect(http.StatusPermanentRedirect,ourl)
-	if err != nil {
-		return ctx.JSON(http.StatusBadRequest, err.Error())
-	}
-	return ctx.JSON(http.StatusOK,ourl)
+	return ctx.Redirect(http.StatusPermanentRedirect,ourl)
+	//if err != nil {
+	//	return ctx.JSON(http.StatusBadRequest, err.Error())
+	//}
+	//return ctx.JSON(http.StatusOK,ourl)
 }
