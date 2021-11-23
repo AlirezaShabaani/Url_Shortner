@@ -8,7 +8,7 @@ import (
 	"url_shortner/internal/adapters/driven/redis"
 	"url_shortner/internal/adapters/driving/httphdl"
 	"url_shortner/internal/core/service"
-	"url_shortner/internal/repositories/urlservices"
+	"url_shortner/internal/repositories/urlRepo"
 	"url_shortner/pkg/uidgen"
 )
 
@@ -22,9 +22,9 @@ var (
 			mysqlConf,redisConf,serverConf := config.LoadConfigs()
 			MYSQL := mysql.InitMysql(mysqlConf.Host,mysqlConf.Port,mysqlConf.UserName,mysqlConf.Password,mysqlConf.DbName)
 			REDIS := redis.InitRedis(redisConf.Addr,redisConf.UserName,redisConf.Password,redisConf.DbName)
-			dbrepo := urlservices.NewDb(MYSQL)
-			redrepo := urlservices.NewCache(REDIS)
-			urlservices := service.New(dbrepo,uidgen.UIDGen().New(),redrepo)
+			dbrepo := urlRepo.NewDb(MYSQL)
+			redrepo := urlRepo.NewCache(REDIS)
+			urlservices := service.New(dbrepo,uidgen.New(),redrepo)
 			hdl := httphdl.New(urlservices)
 			e.POST("/new",hdl.Save)
 			e.POST("/redirect",hdl.Read)

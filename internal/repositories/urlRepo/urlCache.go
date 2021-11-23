@@ -1,4 +1,4 @@
-package urlservices
+package urlRepo
 
 import (
 	"context"
