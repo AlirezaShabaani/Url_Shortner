@@ -20,7 +20,7 @@ func New(repositoryServices port.DBRepository, uidgen uidgen.UIDGen, CacheReposi
 }
 
 func (srvs *service) Save(ourl string) (surl string, err error) {
-	surl = srvs.random.New(len(ourl) / 3)
+	surl = srvs.random.New(4)
 	surl, err = srvs.DBRepository.Save(domain.Data{Ourl: ourl, Surl: surl})
 	if err != nil {
 		return "", errors.New("trouble when saving shortened url in database")
@@ -31,6 +31,7 @@ func (srvs *service) Save(ourl string) (surl string, err error) {
 	}
 	return surl, nil
 }
+
 
 func (srvs *service) Read(surl string) (ourl string, err error) {
 	ourl, err = srvs.CacheRepository.ReadCache(surl)

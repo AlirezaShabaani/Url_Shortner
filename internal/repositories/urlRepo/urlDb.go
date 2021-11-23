@@ -14,14 +14,14 @@ func NewDb(db *gorm.DB) *urlRepositories {
 }
 
 func (ur *urlRepositories) Save(data domain.Data) (surl string,err error) {
-	var result *domain.Data
-	resp := ur.db.FirstOrCreate(data,&domain.Data{
+	resp := ur.db.Where(&domain.Data{
 		Ourl: data.Ourl,
-	}).Scan(&result)
+	}).FirstOrCreate(&data)
 	if resp.Error != nil {
-		return "",resp.Error
+		return data.Ourl,resp.Error
 	}
-	return result.Surl,nil
+	surl = data.Surl
+	return
 }
 
 func (ur *urlRepositories) ReadDb(surl string) (data domain.Data, err error) {
