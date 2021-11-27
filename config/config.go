@@ -27,13 +27,6 @@ type redisConf struct {
 }
 
 func LoadConfigs() (mysqlConf *mysqlConf,redisConf *redisConf,serverConf *serveConf) {
-	mysqlConf = loadSDBConfig()
-	redisConf = loadRedisConf()
-	serverConf = loadServeConfig()
-	return
-}
-
-func loadSDBConfig() *mysqlConf {
 	v := viper.New()
 	v.SetConfigFile("config.yaml")
 	v.AddConfigPath(".")
@@ -41,6 +34,14 @@ func loadSDBConfig() *mysqlConf {
 	if err != nil {
 		log.Fatal(err.Error())
 	}
+
+	mysqlConf = loadSDBConfig(v)
+	redisConf = loadRedisConf(v)
+	serverConf = loadServeConfig(v)
+	return
+}
+
+func loadSDBConfig(v *viper.Viper) *mysqlConf {
 	port := v.GetString("MYSQL_PORT")
 	host := v.GetString("MYSQL_HOST")
 	user := v.GetString("MYSQL_USER")
@@ -58,14 +59,7 @@ func loadSDBConfig() *mysqlConf {
 	}
 }
 
-func loadRedisConf() *redisConf {
-	v := viper.New()
-	v.SetConfigFile("config.yaml")
-	v.AddConfigPath(".")
-	err := v.ReadInConfig()
-	if err != nil {
-		log.Fatal(err.Error())
-	}
+func loadRedisConf(v *viper.Viper) *redisConf {
 	port := v.GetString("REDIS_PORT")
 	host := v.GetString("REDIS_HOST")
 	user := v.GetString("REDIS_USER")
@@ -87,14 +81,7 @@ func loadRedisConf() *redisConf {
 	}
 }
 
-func loadServeConfig() *serveConf {
-	v := viper.New()
-	v.SetConfigFile("config.yaml")
-	v.AddConfigPath(".")
-	err := v.ReadInConfig()
-	if err != nil {
-		log.Fatal(err.Error())
-	}
+func loadServeConfig(v *viper.Viper) *serveConf {
 	port := v.GetString("SERVER_PORT")
 	host := v.GetString("SERVER_HOST")
 	if port == "" || host == "" {
